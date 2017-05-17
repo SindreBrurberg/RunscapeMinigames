@@ -69,7 +69,7 @@ namespace RunscapeMinigames
         {
             string ds=MakeAsyncRequest("http://www.runeclan.com/clan/Consentus/competitions?id=4861", "text/html").Result;
 			// Console.WriteLine("Starting first Thread");
-            Thread th = new Thread(()=>thred(ds));
+            Thread th = new Thread(()=>getUserInfo(ds));
             th.Start();
             int numOfPages = Int16.Parse(ds.Substring(ds.IndexOf("<div class=\"pagination_page\">Page 1 of ") + "<div class=\"pagination_page\">Page 1 of ".Length) 
 				.Remove(ds.IndexOf("</div><div class=\"pagination_select\"><span class=\"disabled\">") - 
@@ -80,7 +80,7 @@ namespace RunscapeMinigames
 					Console.WriteLine("http://www.runeclan.com/clan/Consentus/competitions?id=4861&page=" + i);
                     ds=MakeAsyncRequest("http://www.runeclan.com/clan/Consentus/competitions?id=4861&page=" + i, "text/html").Result;
 					// Console.WriteLine("Starting new Thread");
-                    tha[i-2] = new Thread(()=>thred(ds));
+                    tha[i-2] = new Thread(()=>getUserInfo(ds));
                     tha[i-2].Start();
                 }
             }
@@ -125,9 +125,6 @@ namespace RunscapeMinigames
                 Console.WriteLine(user.getUser());
             }     
             // Console.WriteLine ("Got response of {0}", task.Result);
-        }
-        private static void thred(string page) {
-			 getUserInfo(page);
         }
         private static void getUserInfo(string page) {
             string eventPage = page.Substring(page.IndexOf("<div class=\"events_wrap\">")).Remove(page.IndexOf("<div class=\"page_footer\">") - page.IndexOf("<div class=\"events_wrap\">"));
