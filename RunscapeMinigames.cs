@@ -122,7 +122,9 @@ namespace RunscapeMinigames
             //     Console.WriteLine(team.getTeam());
             // }
 			foreach (user user in usersInfo.OrderBy(user=>user.points)) {
-                Console.WriteLine(user.getUser());
+                if (user.points > 0) {
+					Console.WriteLine(user.getUser());
+				}
             }     
             // Console.WriteLine ("Got response of {0}", task.Result);
         }
