@@ -67,7 +67,8 @@ namespace RunscapeMinigames
 		private static List<team> teams = new List<team>();
         static void Main(string[] args)
         {
-            string ds=MakeAsyncRequest("http://www.runeclan.com/clan/Consentus/competitions?id=4861", "text/html").Result;
+			int id = Int16.Parse(args.First());
+            string ds=MakeAsyncRequest("http://www.runeclan.com/clan/Consentus/competitions?id=" + id, "text/html").Result;
 			// Console.WriteLine("Starting first Thread");
             Thread th = new Thread(()=>getUserInfo(ds));
             th.Start();
@@ -77,8 +78,8 @@ namespace RunscapeMinigames
             Thread[] tha = new Thread[numOfPages-1];
             if (numOfPages > 1) {
 				for (int i = 2; i<=numOfPages; i++) {
-					Console.WriteLine("http://www.runeclan.com/clan/Consentus/competitions?id=4861&page=" + i);
-                    ds=MakeAsyncRequest("http://www.runeclan.com/clan/Consentus/competitions?id=4861&page=" + i, "text/html").Result;
+					Console.WriteLine("http://www.runeclan.com/clan/Consentus/competitions?id=" + id + "&page=" + i);
+                    ds=MakeAsyncRequest("http://www.runeclan.com/clan/Consentus/competitions?id=" + id + "&page=" + i, "text/html").Result;
 					// Console.WriteLine("Starting new Thread");
                     tha[i-2] = new Thread(()=>getUserInfo(ds));
                     tha[i-2].Start();
