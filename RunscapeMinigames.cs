@@ -67,8 +67,19 @@ namespace RunscapeMinigames
 		private static List<team> teams = new List<team>();
         static void Main(string[] args)
         {
+			if (args.Length != 1) {return;}
 			int id = Int16.Parse(args.First());
+			if (id < 1) {return;}
+			// using (StreamWriter file = new StreamWriter(
+			//   new FileStream(@"C:\Users\sindr\Desktop\Competition " + id + ".txt", FileMode.Create))){
+			// 	file.WriteLine("TEST");   
+			// 	Console.WriteLine("Written to file");
+			// }
+			// return;
             string ds=MakeAsyncRequest("http://www.runeclan.com/clan/Consentus/competitions?id=" + id, "text/html").Result;
+			while (ds.Contains("database error")) {
+				ds = MakeAsyncRequest("http://www.runeclan.com/clan/Consentus/competitions?id=" + id, "text/html").Result;
+			}
 			// Console.WriteLine("Starting first Thread");
             Thread th = new Thread(()=>getUserInfo(ds));
             th.Start();
@@ -80,6 +91,9 @@ namespace RunscapeMinigames
 				for (int i = 2; i<=numOfPages; i++) {
 					Console.WriteLine("http://www.runeclan.com/clan/Consentus/competitions?id=" + id + "&page=" + i);
                     ds=MakeAsyncRequest("http://www.runeclan.com/clan/Consentus/competitions?id=" + id + "&page=" + i, "text/html").Result;
+					while (ds.Contains("database error")) {
+						ds = MakeAsyncRequest("http://www.runeclan.com/clan/Consentus/competitions?id=" + id + "&page=" + i, "text/html").Result;
+					}
 					// Console.WriteLine("Starting new Thread");
                     tha[i-2] = new Thread(()=>getUserInfo(ds));
                     tha[i-2].Start();
@@ -122,11 +136,15 @@ namespace RunscapeMinigames
 			// foreach (team team in teams.OrderBy(t=>t.points)) {
             //     Console.WriteLine(team.getTeam());
             // }
-			foreach (user user in usersInfo.OrderBy(user=>user.points)) {
-                if (user.points > 0) {
-					Console.WriteLine(user.getUser());
-				}
-            }     
+			using (StreamWriter file = new StreamWriter(
+			  new FileStream(@"C:\Users\Public\Desktop\Competition " + id + ".txt", FileMode.Create))){
+				foreach (user user in usersInfo.OrderBy(user=>user.points)) {
+                	if (user.points > 0) {
+						string userString = user.getUser();
+						file.WriteLine(userString);
+					}
+            	}     
+			}
             // Console.WriteLine ("Got response of {0}", task.Result);
         }
         private static void getUserInfo(string page) {
@@ -143,12 +161,15 @@ namespace RunscapeMinigames
 					int isn = i.IndexOf(isns);
 					int ien = i.IndexOf("\" name=");
 					string username = i.Substring(isn + isns.Length).Remove(ien - isn - isns.Length).Replace("+"," ");
-					// Console.WriteLine(username);
+					Console.WriteLine(username);
 					string ises = "class=\"clan_td clan_xpgain_trk\">";
 					int ise = i.IndexOf(ises);
 					int iee = i.IndexOf("</td></");
 					int  eventXP = Int32.Parse(i.Substring(ise + ises.Length).Remove(iee - ise - ises.Length).Replace(",",""));
 					String dsUser = MakeAsyncRequest("http://www.runeclan.com/user/"+ username.Replace(" ","+"), "text/html").Result;
+					while (dsUser.Contains("database error")) {
+						dsUser = MakeAsyncRequest("http://www.runeclan.com/user/"+ username.Replace(" ","+"), "text/html").Result;
+					}
 					// Console.WriteLine(dsUser.IndexOf("alt=\"Private Profile\""));
 					if (dsUser.IndexOf("alt=\"Private Profile\"") != -1) {
 						// userInfo.Add(username + ": Skill: " + skill + " PRIVATE PROFILE");
@@ -159,8 +180,16 @@ namespace RunscapeMinigames
 						string isdss = "onmousemove=\"xpTrackerBox('" + skill.ToLower();
 						int isds = dsUser.IndexOf(isdss);
 						int ieds = dsUser.LastIndexOf("<div class=\"adlgleaderboard");
-						string[] skillArray = dsUser.Substring(isds + isdss.Length).Remove(ieds - isds - isdss.Length).Split(new string[] {"td>"}, StringSplitOptions.None);
-                    	int totalXP = Int32.Parse(skillArray[1].Replace("<td class=\"xp_tracker_cxp\">", "").Trim('/').Trim('<').Replace(",",""));
+						string[] skillArray;
+						try {skillArray = dsUser.Substring(isds + isdss.Length).Remove(ieds - isds - isdss.Length).Split(new string[] {"td>"}, StringSplitOptions.None);}
+						catch {
+							Console.WriteLine(dsUser);
+						}
+						skillArray = dsUser.Substring(isds + isdss.Length).Remove(ieds - isds - isdss.Length).Split(new string[] {"td>"}, StringSplitOptions.None);
+                    	Console.Write(skillArray.Length + ": " + username);
+						if (skillArray.Length == 1) {Console.Write(": "+skillArray[0]);}
+						Console.WriteLine(": " + skillArray[1] + ": " + isds + ": " + ieds);
+						int totalXP = Int32.Parse(skillArray[1].Replace("<td class=\"xp_tracker_cxp\">", "").Trim('/').Trim('<').Replace(",",""));
 						usersInfo.Add(new user(username, skill, totalXP, eventXP, points(skill, totalXP, eventXP), getLevel(totalXP)));
 						usernames.Add(username);
 					}
