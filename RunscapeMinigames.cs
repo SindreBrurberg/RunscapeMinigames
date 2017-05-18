@@ -161,7 +161,7 @@ namespace RunscapeMinigames
 					int isn = i.IndexOf(isns);
 					int ien = i.IndexOf("\" name=");
 					string username = i.Substring(isn + isns.Length).Remove(ien - isn - isns.Length).Replace("+"," ");
-					Console.WriteLine(username);
+					// Console.WriteLine(username);
 					string ises = "class=\"clan_td clan_xpgain_trk\">";
 					int ise = i.IndexOf(ises);
 					int iee = i.IndexOf("</td></");
@@ -186,9 +186,9 @@ namespace RunscapeMinigames
 							Console.WriteLine(dsUser);
 						}
 						skillArray = dsUser.Substring(isds + isdss.Length).Remove(ieds - isds - isdss.Length).Split(new string[] {"td>"}, StringSplitOptions.None);
-                    	Console.Write(skillArray.Length + ": " + username);
-						if (skillArray.Length == 1) {Console.Write(": "+skillArray[0]);}
-						Console.WriteLine(": " + skillArray[1] + ": " + isds + ": " + ieds);
+                    	// Console.Write(skillArray.Length + ": " + username);
+						// if (skillArray.Length == 1) {Console.Write(": "+skillArray[0]);}
+						// Console.WriteLine(": " + skillArray[1] + ": " + isds + ": " + ieds);
 						int totalXP = Int32.Parse(skillArray[1].Replace("<td class=\"xp_tracker_cxp\">", "").Trim('/').Trim('<').Replace(",",""));
 						usersInfo.Add(new user(username, skill, totalXP, eventXP, points(skill, totalXP, eventXP), getLevel(totalXP)));
 						usernames.Add(username);
