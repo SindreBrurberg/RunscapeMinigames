@@ -248,7 +248,9 @@ namespace RunscapeMinigames
 				} else {
 					if (i==tiers) {
 						points += (int)((double)maxXPPH/tier[i]/100.0*XPLeft);
+						return points;
 					}
+					Console.WriteLine(xpForLevel(tierUp[i]) - startXP);
 					XPLeft -= xpForLevel(tierUp[i]) - startXP;
 					points += (int)((double)maxXPPH/tier[i]/100.0*(xpForLevel(tierUp[i]) - startXP));
 				}
