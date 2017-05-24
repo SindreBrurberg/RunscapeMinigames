@@ -7042,16 +7042,16 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\sindr\\C#\\runescapeMinigames\\RunescapeMinigames.csproj",
+      "projectUniqueName": "C:\\Users\\sindr\\C#\\runescapeMinigames\\RunescapeMinigames.csproj",
       "projectName": "RunescapeMinigames",
-      "projectPath": "c:\\Users\\sindr\\C#\\runescapeMinigames\\RunescapeMinigames.csproj",
-      "outputPath": "c:\\Users\\sindr\\C#\\runescapeMinigames\\obj\\",
+      "projectPath": "C:\\Users\\sindr\\C#\\runescapeMinigames\\RunescapeMinigames.csproj",
+      "outputPath": "C:\\Users\\sindr\\C#\\runescapeMinigames\\obj\\",
       "projectStyle": "PackageReference",
       "originalTargetFrameworks": [
         "netcoreapp1.1"
       ],
       "files": {
-        "lib/netcoreapp1.1/RunescapeMinigames.dll": "c:\\Users\\sindr\\C#\\runescapeMinigames\\bin\\placeholder\\netcoreapp1.1\\RunescapeMinigames.dll"
+        "lib/netcoreapp1.1/RunescapeMinigames.dll": "C:\\Users\\sindr\\C#\\runescapeMinigames\\bin\\placeholder\\netcoreapp1.1\\RunescapeMinigames.dll"
       },
       "frameworks": {
         "netcoreapp1.1": {

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Security;
 
 namespace RunscapeMinigames
 {
@@ -70,8 +71,9 @@ namespace RunscapeMinigames
 			if (args.Length != 1) {return;}
 			int id = Int16.Parse(args.First());
 			if (id < 1) {return;}
+			// Console.WriteLine(System.Security.Principal.WindowsIdentity.GetCurrent().Name);
 			// using (StreamWriter file = new StreamWriter(
-			//   new FileStream(@"C:\Users\sindr\Desktop\Competition " + id + ".txt", FileMode.Create))){
+			//   new FileStream(@"C:\RunescapeMinigames\Competition " + id + ".txt", FileMode.Create))){
 			// 	file.WriteLine("TEST");   
 			// 	Console.WriteLine("Written to file");
 			// }
@@ -100,7 +102,7 @@ namespace RunscapeMinigames
                 }
             }
 			string forum = MakeAsyncRequest("http://consentus.co.uk/events/skilling-clan-competition-12206/", "text/html").Result;
-			string inner = forum.Substring(forum.IndexOf("Teams currently signed up:")).Remove(forum.IndexOf("Players looking for partners:")-forum.IndexOf("Teams currently signed up:"));
+			string inner = forum.Substring(forum.IndexOf("Teams currently signed up:")).Remove(forum.IndexOf("ATTENTION!")-forum.IndexOf("Teams currently signed up:"));
 			List<string> teamInfo = new List<string>();
 			foreach (string span in inner.Split(new string[] {"</span>"}, StringSplitOptions.None)) {
 				string s = span.Split(new string[] {". "}, StringSplitOptions.None).Last().Split(new string[] {"\">"}, StringSplitOptions.None).Last();
@@ -137,7 +139,7 @@ namespace RunscapeMinigames
             //     Console.WriteLine(team.getTeam());
             // }
 			using (StreamWriter file = new StreamWriter(
-			  new FileStream(@"C:\Users\Public\Desktop\Competition " + id + ".txt", FileMode.Create))){
+			  new FileStream(@"C:\RunescapeMinigames\Competition " + id + ".txt", FileMode.Create))){
 				foreach (user user in usersInfo.OrderBy(user=>user.points)) {
                 	if (user.points > 0) {
 						string userString = user.getUser();
@@ -235,20 +237,20 @@ namespace RunscapeMinigames
 			int XPLeft = gainedXP;
 			for (int i = 0; i < maxTiers; i++) {
 				if (startXP >= xpForLevel(tierUp[i])) {startTier++;}
-				tiers=startTier;
+				if (totalUserXP >= xpForLevel(tierUp[i])) {tiers++;}
 			}
 			for (int i = startTier; i < maxTiers; i++) {
 				if (totalUserXP >= xpForLevel(tierUp[i])) {tiers++;}
 			}
 			for (int i = startTier; i <= tiers; i++) {
 				if (startTier == tiers) {
-					return (int)(maxXPPH/tier[i]/100.0*gainedXP);
+					return (int)((double)maxXPPH/tier[i]/100.0*gainedXP);
 				} else {
 					if (i==tiers) {
-						points += (int)(maxXPPH/tier[i]/100.0*XPLeft);
+						points += (int)((double)maxXPPH/tier[i]/100.0*XPLeft);
 					}
 					XPLeft -= xpForLevel(tierUp[i]) - startXP;
-					points += (int)(maxXPPH/tier[i]/100.0*(xpForLevel(tierUp[i]) - startXP));
+					points += (int)((double)maxXPPH/tier[i]/100.0*(xpForLevel(tierUp[i]) - startXP));
 				}
 			}
 			return points;
