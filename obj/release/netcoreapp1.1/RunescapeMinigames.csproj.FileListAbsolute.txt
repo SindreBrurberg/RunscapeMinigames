@@ -1,8 +1,0 @@
-C:\Users\sindr\C#\runescapeMinigames\bin\release\netcoreapp1.1\RunescapeMinigames.deps.json
-C:\Users\sindr\C#\runescapeMinigames\bin\release\netcoreapp1.1\RunescapeMinigames.runtimeconfig.json
-C:\Users\sindr\C#\runescapeMinigames\bin\release\netcoreapp1.1\RunescapeMinigames.runtimeconfig.dev.json
-C:\Users\sindr\C#\runescapeMinigames\bin\release\netcoreapp1.1\RunescapeMinigames.dll
-C:\Users\sindr\C#\runescapeMinigames\bin\release\netcoreapp1.1\RunescapeMinigames.pdb
-C:\Users\sindr\C#\runescapeMinigames\obj\release\netcoreapp1.1\RunescapeMinigames.AssemblyInfo.cs
-C:\Users\sindr\C#\runescapeMinigames\obj\release\netcoreapp1.1\RunescapeMinigames.dll
-C:\Users\sindr\C#\runescapeMinigames\obj\release\netcoreapp1.1\RunescapeMinigames.pdb
